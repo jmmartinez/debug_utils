@@ -18,8 +18,8 @@ def advance_to_condition(
     """Advance to the first breakpoint where the condition is met"""
 
     parser = ArgumentParser(prog=__name__, description=__doc__)
-    parser.add_argument("--at", nargs="+", action="append", help="Breakpoint to stop and execute condition")
-    parser.add_argument("--cond", nargs=1, help="Condition to execute at breakpoint")
+    parser.add_argument("--at", nargs="+", action="append", help="Breakpoint to stop and execute condition", required=True)
+    parser.add_argument("--cond", type=str, help="Condition to execute at breakpoint", required=True)
     args = parser.parse_args(split_args(command))
 
     breakpoints = []
@@ -30,7 +30,7 @@ def advance_to_condition(
         except _:
             breakpoints.append(breakpoint_loc)
 
-    condition : str = args.cond[0]
+    condition : str = args.cond
 
     # run until the end
     try:
