@@ -29,6 +29,8 @@ def visit_breakpoints(debugger: lldb.SBDebugger, breakpoints : typing.Sequence) 
     process : lldb.SBProcess = target.GetProcess()
     if not process or not process.is_alive:
         process = target.Launch(target.GetLaunchInfo(), error)
+    else:
+        process = target.Continue()
 
     # run until the end
     while not error.Fail():
