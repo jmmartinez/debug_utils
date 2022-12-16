@@ -27,7 +27,7 @@ def advance_to_condition(
         try:
             source, line = breakpoint_loc.split(":")
             breakpoints.append((source, int(line)))
-        except _:
+        except:
             breakpoints.append(breakpoint_loc)
 
     condition : str = args.cond
