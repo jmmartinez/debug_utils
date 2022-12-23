@@ -9,6 +9,8 @@ import lldb, lldb_utils
 # then do
 #   > advance_to_condition --at "PersonDatabase.cpp:100" --cond "Person->age == -1"
 
+# this command is intended to do something  very similar to breakpoint --name foo --cond mycondition(),
+#  however, I normally add stuff to it (like collecting the backtraces in a log, moving to the end of the function, etc...).
 @lldb.command()
 def advance_to_condition(
     debugger : lldb.SBDebugger,
