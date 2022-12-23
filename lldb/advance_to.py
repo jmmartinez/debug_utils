@@ -51,3 +51,25 @@ def advance_to_condition(
         result.SetError(error.error)
 
     return
+
+@lldb.command()
+def breakpoint_on_stderr(
+    debugger : lldb.SBDebugger,
+    command : str,
+    result : lldb.SBCommandReturnObject,
+    _ : dict):
+    """Put a breakpoint when something is written to stderr"""
+
+    parser = ArgumentParser(prog=__name__, description=__doc__)
+    parser.add_argument("--message", type=str, help="Error message", required=False, default="")
+    args = parser.parse_args(split_args(command))
+
+    message : str = args.message
+
+    target : lldb.SBTarget = debugger.GetSelectedTarget()
+    bp_on_write = target.BreakpointCreateByName("__libc_write")
+
+    on_stderr = "fd == 2"
+    and_has_message = f" && ((char *)strstr((const char*)buf, \"{message}\"))" if message else ""
+    bp_on_write.SetCondition(f"{on_stderr}{and_has_message}")
+    return
